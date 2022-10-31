@@ -28,12 +28,12 @@ public class WaterCalculatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeInput() {
-        WaterCalculator.calculateWaterAmount(new int[] { 10, MIN_HEIGHT - 1 });
+        WaterCalculator.calculateWaterAmount(new int[] { 10, 10, MIN_HEIGHT - 1 });
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testTooBigInput() {
-        WaterCalculator.calculateWaterAmount(new int[] { 10, MAX_HEIGHT + 1 });
+        WaterCalculator.calculateWaterAmount(new int[] { 10, 10, MAX_HEIGHT + 1 });
     }
 
     @Test

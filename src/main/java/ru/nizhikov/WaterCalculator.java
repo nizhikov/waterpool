@@ -10,7 +10,14 @@ public class WaterCalculator {
     public static final int MAX_LENGTH = 32_000;
 
     public static long calculateWaterAmount(int[] landscape) {
-        checkInput(landscape);
+        if (landscape == null)
+            throw new IllegalArgumentException("Landscape is null");
+
+        if (landscape.length == 0)
+            throw new IllegalArgumentException("Landscape is empty");
+
+        if (landscape.length > MAX_LENGTH)
+            throw new IllegalArgumentException("Landscape is too long");
 
         if (landscape.length < 3)
             return 0;
@@ -19,7 +26,7 @@ public class WaterCalculator {
 
         int i = 1;
 
-        while (i < landscape.length && landscape[i - 1] <= landscape[i])
+        while (i < landscape.length && get(landscape, i - 1) <= get(landscape, i))
             i++;
 
         if (i == landscape.length)
@@ -32,18 +39,19 @@ public class WaterCalculator {
 
         while (i < landscape.length) {
             // Skip all decreasing.
-            while (i < landscape.length && landscape[i] <= landscape[i - 1])
+            while (i < landscape.length && get(landscape, i) <= get(landscape, i - 1))
                 i++;
 
             // Skip all increasing.
-            while (i < landscape.length && landscape[i] >= landscape[i - 1])
+            while (i < landscape.length && get(landscape, i) >= get(landscape, i - 1))
                 i++;
 
             while (stack.size() >= 2) {
-                int one = landscape[stack.get(stack.size() - 2)];
-                int two = landscape[stack.get(stack.size() - 1)];
-                int three = landscape[i - 1];
+                int one = get(landscape, stack.get(stack.size() - 2));
+                int two = get(landscape, stack.get(stack.size() - 1));
+                int three = get(landscape, i - 1);
 
+                // Combine overlapping areas.
                 if (one > two && three > two) {
                     stack.pop();
                 }
@@ -68,22 +76,13 @@ public class WaterCalculator {
         return res;
     }
 
-    private static void checkInput(int[] landscape) {
-        if (landscape == null)
-            throw new IllegalArgumentException("Landscape is null");
-
-        if (landscape.length == 0)
-            throw new IllegalArgumentException("Landscape is empty");
-
-        if (landscape.length > MAX_LENGTH)
-            throw new IllegalArgumentException("Landscape is too long");
-
-        for (int i=0; i<landscape.length; i++) {
-            if (landscape[i] < MIN_HEIGHT || landscape[i] > MAX_HEIGHT) {
-                throw new IllegalArgumentException(
-                    "Wrong " + i + " height. Must be between " + MIN_HEIGHT + " and " + MAX_HEIGHT
-                );
-            }
+    private static int get(int[] landscape, int i) {
+        if (landscape[i] < MIN_HEIGHT || landscape[i] > MAX_HEIGHT) {
+            throw new IllegalArgumentException(
+                "Wrong " + i + " height. Must be between " + MIN_HEIGHT + " and " + MAX_HEIGHT
+            );
         }
+
+        return landscape[i];
     }
 }
