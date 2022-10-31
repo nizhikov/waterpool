@@ -58,6 +58,6 @@ public class WaterCalculatorTest {
             i++;
         }
 
-        assertEquals(8, i - 1);
+        assertEquals(9, i - 1);
     }
 }
